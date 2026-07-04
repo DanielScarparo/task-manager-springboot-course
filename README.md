@@ -75,9 +75,16 @@ A API estará disponível em http://localhost:8080. (Como utiliza persistência 
 ./gradlew test
 ````
 Este comando executa a suíte de testes unitários e de integração e aciona o Spring REST Docs para gerar os snippets de documentação da API.
+
 🤝 Como ContribuirFaça um Fork do projeto.
+
 Crie uma branch para sua funcionalidade:
+
 git checkout -b feature/implementar-banco-postgres.
+
 Commit suas alterações (incluindo testes): git commit -m 'feat: adiciona persistencia com spring data jpa'
+
 Faça o push para a branch: git push origin feature/implementar-banco-postgres.Abra um Pull Request.
+
+
 👤 AutorDaniel Alves Scarparo SilvaDesenvolvedor focado em Arquitetura de Software e boas práticas.
