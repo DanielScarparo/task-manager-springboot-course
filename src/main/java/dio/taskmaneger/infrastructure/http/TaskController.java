@@ -1,10 +1,10 @@
 package dio.taskmaneger.infrastructure.http;
-
 import dio.taskmaneger.application.*;
 import dio.taskmaneger.domain.TaskId;
-import dio.taskmaneger.infrastructure.http.request.CreatetaskRequest;
+import dio.taskmaneger.infrastructure.http.request.CreateTaskRequest;
 import dio.taskmaneger.infrastructure.http.request.UpdateTaskRequest;
 import dio.taskmaneger.infrastructure.http.response.TaskResponse;
+import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -28,7 +28,8 @@ public class TaskController {
     }
 
     @PostMapping
-    TaskResponse create(@RequestBody CreatetaskRequest request) {
+    @ResponseStatus(HttpStatus.CREATED)
+    TaskResponse create(@RequestBody @Valid CreateTaskRequest request) {
         var input = request.toInput();
         var output = createTaskUseCase.execute(input);
         return TaskResponse.from(output);
@@ -45,13 +46,13 @@ public class TaskController {
         return TaskResponse.from(output);
     }
 
-    @GetMapping("{/id}")
+    @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     void delete(@PathVariable UUID id) {
         deleteTaskUseCase.execute(new TaskId(id));
     }
 
-    @PatchMapping("{/id}")
+    @PatchMapping("/{id}")
     TaskResponse update(@PathVariable UUID id, @RequestBody UpdateTaskRequest request) {
         var input = request.toInput();
         var output = updateTaskUseCase.execute(new TaskId(id), input);
