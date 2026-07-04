@@ -1,29 +1,60 @@
 package dio.taskmaneger.infrastructure.http;
 
-import dio.taskmaneger.application.CreateTaskUseCase;
-import dio.taskmaneger.application.input.CreateTaskInput;
+import dio.taskmaneger.application.*;
+import dio.taskmaneger.domain.TaskId;
 import dio.taskmaneger.infrastructure.http.request.CreatetaskRequest;
+import dio.taskmaneger.infrastructure.http.request.UpdateTaskRequest;
 import dio.taskmaneger.infrastructure.http.response.TaskResponse;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Optional;
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/tasks")
 public class TaskController {
     private final CreateTaskUseCase createTaskUseCase;
+    private final GetTasksUseCase getTasksUseCase;
+    private final GetTaskByIdUseCase getTaskByIdUseCase;
+    private final DeleteTaskUseCase deleteTaskUseCase;
+    private final UpdateTaskUseCase updateTaskUseCase;
 
-    public TaskController(CreateTaskUseCase createTaskUseCase) {
+    public TaskController(CreateTaskUseCase createTaskUseCase, GetTasksUseCase getTasksUseCase, GetTaskByIdUseCase getTaskByIdUseCase, DeleteTaskUseCase deleteTaskUseCase, UpdateTaskUseCase updateTaskUseCase){
         this.createTaskUseCase = createTaskUseCase;
+        this.getTasksUseCase = getTasksUseCase;
+        this.getTaskByIdUseCase = getTaskByIdUseCase;
+        this.deleteTaskUseCase = deleteTaskUseCase;
+        this.updateTaskUseCase = updateTaskUseCase;
     }
 
     @PostMapping
     TaskResponse create(@RequestBody CreatetaskRequest request) {
         var input = request.toInput();
         var output = createTaskUseCase.execute(input);
+        return TaskResponse.from(output);
+    }
+
+    @GetMapping
+    List<TaskResponse> list(){
+        return getTasksUseCase.execute().stream().map(TaskResponse::from).toList();
+    }
+
+    @GetMapping("/{id}")
+    TaskResponse read(@PathVariable UUID id) {
+        var output = getTaskByIdUseCase.execute(new TaskId(id));
+        return TaskResponse.from(output);
+    }
+
+    @GetMapping("{/id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    void delete(@PathVariable UUID id) {
+        deleteTaskUseCase.execute(new TaskId(id));
+    }
+
+    @PatchMapping("{/id}")
+    TaskResponse update(@PathVariable UUID id, @RequestBody UpdateTaskRequest request) {
+        var input = request.toInput();
+        var output = updateTaskUseCase.execute(new TaskId(id), input);
         return TaskResponse.from(output);
     }
 }
