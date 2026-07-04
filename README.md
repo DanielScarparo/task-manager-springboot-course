@@ -1,89 +1,83 @@
-Task Manager Spring Boot Course
+# ✅ Task Manager API (Clean Architecture)
 
-[![Java Version](https://img.shields.io/badge/Java-17%20%2F%2021-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
+[![Java](https://img.shields.io/badge/Java-17%2B-orange?style=for-the-badge&logo=openjdk)](https://openjdk.org/)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.x-brightgreen?style=for-the-badge&logo=springboot)](https://spring.io/projects/spring-boot)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](https://opensource.org/licenses/MIT)
+[![Gradle](https://img.shields.io/badge/Gradle-9.5-02303A?style=for-the-badge&logo=gradle)](https://gradle.org/)
+[![Spring REST Docs](https://img.shields.io/badge/REST%20Docs-Test--Driven%20Docs-6DB33F?style=for-the-badge&logo=spring)](https://spring.io/projects/spring-restdocs)
 
-**Gerenciador de Tarefas** — Uma API REST robusta desenvolvida com **Java** e **Spring Boot**, projetada como um sistema prático de gerenciamento de tarefas para portfólio e demonstração de competências em arquitetura web e persistência de dados.
+API RESTful para gerenciamento de tarefas desenvolvida com **Spring Boot**. O grande diferencial deste projeto é a aplicação rigorosa de conceitos de **Clean Architecture (Arquitetura Limpa)** e **Domain-Driven Design (DDD)**, garantindo um código altamente testável, manutenível e independente de frameworks de infraestrutura.
 
 ---
 
-## 🚀 Status do Projeto
+## 🏗️ Destaques de Arquitetura e Engenharia
 
-⚡ **Concluído & Pronto para demonstração**
+Este projeto não é apenas um CRUD padrão; ele demonstra padrões avançados de design de software:
+
+*   **Clean Architecture (Ports and Adapters):** Separação estrita entre `domain` (regras de negócio puras), `application` (casos de uso) e `infrastructure` (controladores HTTP, repositórios).
+*   **Use Cases (Casos de Uso):** Lógica de orquestração isolada em classes de propósito único (Ex: `CreateTaskUseCase`, `DeleteTaskUseCase`), seguindo o princípio da Responsabilidade Única (SRP) do SOLID.
+*   **Inversão de Dependência:** O domínio define a interface `TaskRepository`, que é implementada pela infraestrutura (`InMemoryTaskRepository`), permitindo trocar o banco de dados futuramente sem alterar as regras de negócio.
+*   **Test-Driven Documentation:** Utilização do **Spring REST Docs** acoplado ao MockMvc para gerar documentação da API automaticamente a partir da execução dos testes de integração, garantindo que a documentação nunca fique defasada.
+*   **Tratamento Global de Erros:** Uso de `@RestControllerAdvice` para capturar e padronizar exceções de negócio (`TaskNotFoundException`) e erros de validação (`MethodArgumentNotValidException`).
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-O projeto foi construído utilizando as melhores práticas de desenvolvimento no ecossistema Spring:
-
-* **Linguagem:** Java (Compatível com versões 17 e 21)
-* **Framework Core:** Spring Boot 3.x
-* **Persistência de Dados:** Spring Data JPA & Hibernate
-* **Bancos de Dados:** * **H2 Database:** Banco em memória otimizado para o ambiente de desenvolvimento e testes rápidos.
-    * **PostgreSQL:** Banco de dados relacional robusto configurado para o ambiente de produção.
-* **Gerenciador de Dependências:** Maven
-* **Produtividade:** Lombok (Redução de código boilerplate)
-* **Validação:** Jakarta Validation (`@Valid`) para consistência dos dados de entrada.
+*   **Linguagem:** Java (Records, Optional, Streams API)
+*   **Framework Core:** Spring Boot
+*   **Build e Dependências:** Gradle (Wrapper incluso)
+*   **Testes:** JUnit 5, Spring Boot Test, MockMvc, JsonPath
+*   **Documentação:** Spring REST Docs (Asciidoctor)
+*   **Validação:** Jakarta Validation (`@Valid`, `@NotBlank`, `@Size`)
 
 ---
 
-## 📋 Pré-requisitos
+## 🗂️ Estrutura de Diretórios (Clean Architecture)
 
-Antes de começar, você precisará ter instalado em sua máquina:
+```text
+src/main/java/dio/taskmaneger/
+│
+├── domain/            # Core do negócio: Entidades (Task), Value Objects (TaskId) e Interfaces. Zero dependências do Spring.
+├── application/       # Regras da aplicação: Use Cases, Inputs (Records) e Outputs (Records).
+└── infrastructure/    # Adaptadores externos:
+    ├── http/          # Controllers REST (TaskController), Requests, Responses e Exception Handler.
+    └── repository/    # Implementação de persistência (InMemoryTaskRepository).
+````
+🛣️ Endpoints da APIA API responde no path /tasks.MétodoEndpointDescriçãoGET/tasksLista todas as tarefasGET/tasks/{id}Busca uma tarefa específica por UUIDPOST/tasksCria uma nova tarefaPATCH/tasks/{id}Atualiza parcialmente uma tarefa (Ex: alterar status)DELETE/tasks/{id}Remove uma tarefa do sistema (Retorna 204 No Content)
 
-* **Java Development Kit (JDK):** Versão 17 ou superior.
-* **Maven:** Versão 3.6 ou superior (opcional, caso prefira usar o `mvnw` incluso).
-* **Docker & Docker Compose:** (Opcional) Caso deseje rodar a infraestrutura de produção localmente.
-
----
-
-## ⚙️ Instalação, Build e Execução
-
-### 1. Clonar o repositório
-```bash
-git clone [https://github.com/DanielScarparo/task-manager-springboot-course.git](https://github.com/DanielScarparo/task-manager-springboot-course.git)
-cd task-manager-springboot-course
-2. Compilar e gerar o artefato (Build)Use o Maven para limpar builds antigos e empacotar a aplicação em um arquivo .jar:Bashmvn clean package
-3. Executando a aplicaçãoOpção A: Via Plugin do Spring Boot (Ideal para desenvolvimento)Bashmvn spring-boot:run
-Opção B: Executando o arquivo JAR geradoBashjava -jar target/*.jar
-A aplicação iniciará por padrão na porta 8080. Acesse http://localhost:8080.🛣️ Endpoints da APIAbaixo estão listados os endpoints principais da aplicação.
-Você pode testá-los utilizando ferramentas como Postman,
-Insomnia ou via terminal usando curl.MétodoEndpointDescriçãoGET/taskLista todas as tarefas cadastradasGET/task/{id}Busca os detalhes de uma tarefa específica
- por IDPOST/taskCria uma nova tarefaPUT/task/{id}Atualiza os dados de uma tarefa existenteDELETE/task/{id}Remove uma tarefa do
-sistemaGET/task/status/{completed}Filtra tarefas pelo status (true ou false)📝 Exemplo de Payload (POST /task)Request Body (JSON):JSON{
-  "title": "Comprar mantimentos",
-  "description": "Leite, pão, ovos e café",
-  "Status": PADDING,
-  "dueDate": "2026-08-20"
+📝 Exemplo de Payload
+````
+(POST /tasks)JSON{
+  "title": "Aprender Spring RestDocs",
+  "description": "Ler o guia oficial do Spring e implementar testes"
 }
-Exemplo de requisição via curl:Bashcurl -X POST http://localhost:8080/task \
-  -H "Content-Type: application/json" \
-  -d '{"title": "Comprar mantimentos", "description": "Leite, pão, ovos", "completed": false, "dueDate": "2026-08-20"}'
-🗂️ Estrutura do ProjetoPlaintexttask-manager-springboot-course/
-│
-├── src/
-│   ├── main/
-│   │   ├── java/         # Código-fonte da aplicação (Controllers, Services, Repositories, DTOs)
-│   │   └── resources/    # Configurações do projeto (application.properties, SQL scripts)
-│   └── test/             # Testes unitários e de integração
-│
-├── Dockerfile            # Instruções para containerização da aplicação
-├── pom.xml               # Gerenciamento de dependências e plugins do Maven
-└── README.md             # Documentação do projeto
-🧪 Testes AutomatizadosO projeto conta com suítes de testes para garantir a estabilidade das regras de negócio.
-Para executar todos os testes estruturados, utilize o comando:Bashmvn test
-🌐 Configuração de Banco de Dados (Ambientes)Desenvolvimento (Padrão): O projeto está configurado para subir usando o banco H2.
-O console do H2 pode ser acessado em http://localhost:8080/h2-console
-(verifique as credenciais no arquivo application.properties).Produção: Para alternar para o banco de dados PostgreSQL,
-você pode injetar as seguintes variáveis de ambiente na execução:SPRING_DATASOURCE_URL: URL de conexão do banco
-(ex: jdbc:postgresql://localhost:5432/taskdb)SPRING_DATASOURCE_USERNAME: Usuário do bancoSPRING_DATASOURCE_PASSWORD:
- Senha do banco🤝 ContribuiçãoContribuições são sempre bem-vindas!
-Siga os passos abaixo para colaborar:Faça um Fork do projeto.Crie uma branch para sua funcionalidade
-ou correção: git checkout -b feature/nova-funcionalidade ou git checkout -b fix/correcao-bug.Certifique-se de que
-todos os testes estão passando executando mvn test.Faça o Commit de suas alterações com mensagens claras e concisas.Envie
-um Push para a sua branch: git push origin feature/nova-funcionalidade.
-Abra um Pull Request detalhando as alterações propostas.
-👤 AutorDesenvolvido por Daniel Scarparo 
-Conecte-se comigo no GitHub ou verifique meu portfólio de projetos!
+````
+⚙️ Como Executar o ProjetoVocê não precisa ter o Gradle instalado na sua máquina,
+pois o projeto inclui o Gradle Wrapper.
+1. Clonar o repositórioBashgit
+````
+clone [https://github.com/DanielScarparo/task-manager-springboot-course.git](https://github.com/DanielScarparo/task-manager-springboot-course.git)
+cd task-manager-springboot-course
+````
+2. Executar a aplicaçãoNo
+Linux/Mac:
+````
+./gradlew bootRun
+````
+No Windows:
+````
+DOSgradlew.bat bootRun
+````
+A API estará disponível em http://localhost:8080. (Como utiliza persistência em memória, os dados são reiniciados a cada execução, ideal para testes rápidos).
+
+3. Executar os Testes e Gerar Documentação
+````
+./gradlew test
+````
+Este comando executa a suíte de testes unitários e de integração e aciona o Spring REST Docs para gerar os snippets de documentação da API.
+🤝 Como ContribuirFaça um Fork do projeto.
+Crie uma branch para sua funcionalidade:
+git checkout -b feature/implementar-banco-postgres.
+Commit suas alterações (incluindo testes): git commit -m 'feat: adiciona persistencia com spring data jpa'
+Faça o push para a branch: git push origin feature/implementar-banco-postgres.Abra um Pull Request.
+👤 AutorDaniel Alves Scarparo SilvaDesenvolvedor focado em Arquitetura de Software e boas práticas.
