@@ -48,7 +48,11 @@ cd task-manager-springboot-course
 2. Compilar e gerar o artefato (Build)Use o Maven para limpar builds antigos e empacotar a aplicação em um arquivo .jar:Bashmvn clean package
 3. Executando a aplicaçãoOpção A: Via Plugin do Spring Boot (Ideal para desenvolvimento)Bashmvn spring-boot:run
 Opção B: Executando o arquivo JAR geradoBashjava -jar target/*.jar
-A aplicação iniciará por padrão na porta 8080. Acesse http://localhost:8080.🛣️ Endpoints da APIAbaixo estão listados os endpoints principais da aplicação. Você pode testá-los utilizando ferramentas como Postman, Insomnia ou via terminal usando curl.MétodoEndpointDescriçãoGET/taskLista todas as tarefas cadastradasGET/task/{id}Busca os detalhes de uma tarefa específica por IDPOST/taskCria uma nova tarefaPUT/task/{id}Atualiza os dados de uma tarefa existenteDELETE/task/{id}Remove uma tarefa do sistemaGET/task/status/{completed}Filtra tarefas pelo status (true ou false)📝 Exemplo de Payload (POST /task)Request Body (JSON):JSON{
+A aplicação iniciará por padrão na porta 8080. Acesse http://localhost:8080.🛣️ Endpoints da APIAbaixo estão listados os endpoints principais da aplicação.
+Você pode testá-los utilizando ferramentas como Postman,
+Insomnia ou via terminal usando curl.MétodoEndpointDescriçãoGET/taskLista todas as tarefas cadastradasGET/task/{id}Busca os detalhes de uma tarefa específica
+ por IDPOST/taskCria uma nova tarefaPUT/task/{id}Atualiza os dados de uma tarefa existenteDELETE/task/{id}Remove uma tarefa do
+sistemaGET/task/status/{completed}Filtra tarefas pelo status (true ou false)📝 Exemplo de Payload (POST /task)Request Body (JSON):JSON{
   "title": "Comprar mantimentos",
   "description": "Leite, pão, ovos e café",
   "Status": PADDING,
@@ -68,8 +72,18 @@ Exemplo de requisição via curl:Bashcurl -X POST http://localhost:8080/task \
 ├── Dockerfile            # Instruções para containerização da aplicação
 ├── pom.xml               # Gerenciamento de dependências e plugins do Maven
 └── README.md             # Documentação do projeto
-🧪 Testes AutomatizadosO projeto conta com suítes de testes para garantir a estabilidade das regras de negócio. Para executar todos os testes estruturados, utilize o comando:Bashmvn test
-🌐 Configuração de Banco de Dados (Ambientes)Desenvolvimento (Padrão): O projeto está configurado para subir usando o banco H2. O console do H2 pode ser acessado em http://localhost:8080/h2-console (verifique as credenciais no arquivo application.properties).Produção: Para alternar para o banco de dados PostgreSQL, você pode injetar as seguintes variáveis de ambiente na execução:SPRING_DATASOURCE_URL: URL de conexão do banco (ex: jdbc:postgresql://localhost:5432/taskdb)SPRING_DATASOURCE_USERNAME: Usuário do bancoSPRING_DATASOURCE_PASSWORD: Senha do banco🤝 ContribuiçãoContribuições são sempre bem-vindas!
-Siga os passos abaixo para colaborar:Faça um Fork do projeto.Crie uma branch para sua funcionalidade ou correção: git checkout -b feature/nova-funcionalidade ou git checkout -b fix/correcao-bug.Certifique-se de que todos os testes estão passando executando mvn test.Faça o Commit de suas alterações com mensagens claras e concisas.Envie
-um Push para a sua branch: git push origin feature/nova-funcionalidade.Abra um Pull Request detalhando as alterações propostas.
-👤 AutorDesenvolvido por Daniel Scarparo 👉 Conecte-se comigo no GitHub ou verifique meu portfólio de projetos!
+🧪 Testes AutomatizadosO projeto conta com suítes de testes para garantir a estabilidade das regras de negócio.
+Para executar todos os testes estruturados, utilize o comando:Bashmvn test
+🌐 Configuração de Banco de Dados (Ambientes)Desenvolvimento (Padrão): O projeto está configurado para subir usando o banco H2.
+O console do H2 pode ser acessado em http://localhost:8080/h2-console
+(verifique as credenciais no arquivo application.properties).Produção: Para alternar para o banco de dados PostgreSQL,
+você pode injetar as seguintes variáveis de ambiente na execução:SPRING_DATASOURCE_URL: URL de conexão do banco
+(ex: jdbc:postgresql://localhost:5432/taskdb)SPRING_DATASOURCE_USERNAME: Usuário do bancoSPRING_DATASOURCE_PASSWORD:
+ Senha do banco🤝 ContribuiçãoContribuições são sempre bem-vindas!
+Siga os passos abaixo para colaborar:Faça um Fork do projeto.Crie uma branch para sua funcionalidade
+ou correção: git checkout -b feature/nova-funcionalidade ou git checkout -b fix/correcao-bug.Certifique-se de que
+todos os testes estão passando executando mvn test.Faça o Commit de suas alterações com mensagens claras e concisas.Envie
+um Push para a sua branch: git push origin feature/nova-funcionalidade.
+Abra um Pull Request detalhando as alterações propostas.
+👤 AutorDesenvolvido por Daniel Scarparo 
+Conecte-se comigo no GitHub ou verifique meu portfólio de projetos!
